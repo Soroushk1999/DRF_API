@@ -1,5 +1,7 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.db import models
+
+User = get_user_model()
 
 
 class UserProfile(models.Model):
@@ -10,4 +12,7 @@ class UserProfile(models.Model):
     phone_number = models.CharField(max_length=11)
 
     def __str__(self):
-        return self.user.username
+        return self.user
+
+    class Meta:
+        db_table = 'user_profile'
