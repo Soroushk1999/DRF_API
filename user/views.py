@@ -1,10 +1,12 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from django.contrib.auth import get_user_model, login
+
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiResponse
 
 from .models import UserProfile
 from .serializers import UserSerializer, UserProfileSerializer, LoginSerializer
@@ -12,9 +14,19 @@ from .serializers import UserSerializer, UserProfileSerializer, LoginSerializer
 User = get_user_model()
 
 
+@extend_schema(
+    parameters=[
+        OpenApiParameter('id', description='A unique product ID', type=int),
+    ],
+    responses={
+        200: OpenApiResponse(description='Product details', response=UserProfileSerializer),
+        404: OpenApiResponse(description='Product not found'),
+    }
+)
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    http_method_names = ['post']
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -27,27 +39,33 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):
-    queryset = UserProfile.objects.all()
+    queryset = User.objects.all()
     serializer_class = UserProfileSerializer
-    permission_classes = [IsAuthenticated]
+
+    permission_classes = (IsAuthenticated,)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
+
+    def perform_update(self, serializer):
+        serializer.save()
 
     def get_queryset(self):
-        # Check if user is authenticated
-        if self.request.user.is_authenticated:
-            return UserProfile.objects.filter(user=self.request.user)
-        else:
-            return UserProfile.objects.none()
+        return UserProfile.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
-        # Check if user is authenticated
-        if self.request.user.is_authenticated:
-            serializer.save(user=self.request.user)
-        else:
-            return Response({"error": "User must be authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
+        serializer.save(user=self.request.user)
 
 
 class LoginViewSet(viewsets.ViewSet):
+    queryset = User.objects.all()
     serializer_class = LoginSerializer
+
+    permission_classes = [AllowAny]
 
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
