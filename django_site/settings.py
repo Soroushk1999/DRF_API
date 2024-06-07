@@ -37,12 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'psycopg2',
     'rest_framework',
     'rest_framework_simplejwt',
     'drf_spectacular',
 
-    'base',
     'product',
+    'cart',
     'user',
 ]
 
@@ -81,8 +82,12 @@ WSGI_APPLICATION = 'django_site.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'DRF_API',
+        'USER': 'postgres',
+        'PASSWORD': '44139890',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
