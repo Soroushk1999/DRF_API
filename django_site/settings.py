@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
 
     'product',
+    'orders',
     'cart',
     'user',
 ]

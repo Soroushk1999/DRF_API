@@ -10,6 +10,7 @@ class CartItemInline(admin.TabularInline):
     model = CartItem
     extra = 0
     readonly_fields = ['product']
+    list_editable = ['product']
 
     def product_name(self, obj):
         return obj.product.name
@@ -21,3 +22,4 @@ class CartItemInline(admin.TabularInline):
 class CartAdmin(admin.ModelAdmin):
     list_display = ['id', 'user', 'created_at', 'updated_at']
     inlines = [CartItemInline]
+
