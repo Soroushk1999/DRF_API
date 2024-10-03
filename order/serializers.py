@@ -10,10 +10,6 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    product = ProductSerializer(read_only=True)
-    product_id = serializers.PrimaryKeyRelatedField(
-        queryset=Product.objects.all(), source='product', write_only=True)
-
     class Meta:
         model = OrderItem
         fields = ['id', 'product', 'product_id', 'quantity', 'price']
@@ -21,8 +17,8 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
-    user = serializers.ReadOnlyField(source='user.username')
 
     class Meta:
         model = Order
-        fields = ['id', 'user', 'created_at', 'updated_at', 'status', 'items']
+        fields = ['id', 'user', 'items', 'status', 'total_price', 'created_at', 'updated_at']
+        read_only_fields = ['user', 'created_at', 'updated_at', 'status', 'total_price']

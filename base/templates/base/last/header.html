@@ -1,0 +1,100 @@
+{% load static %}
+<header>
+    <div class="container">
+        <div class="brand">
+            <div class="logo">
+                <a href={% url "base:base" %}>
+                    <img src={% static "base/img/icons/online_shopping.png" %}>
+                    <div class="logo-text">
+                        <p class="big-logo">Ecommerce</p>
+                        <p class="small-logo">online shop</p>
+                    </div>
+                </a>
+            </div> <!-- logo -->
+            <div class="shop-icon">
+                <div class="dropdown">
+                    <img src={% static "base/img/icons/account.png" %}>
+                    <div class="dropdown-menu">
+                        <ul>
+                            <li><a href={% url "user:user-profile-detail" user.id %}>My Account</a></li>
+                            <li><a href={% url "order:order-list" %}>My Orders</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <img src={% static "base/img/icons/heart.png" %}>
+                    <div class="dropdown-menu wishlist-item">
+                        <table border="1">
+                            <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Product Name</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><img src={% static "base/img/product/img1.jpg" %}></td>
+                                <td>product name</td>
+                            </tr>
+                            <tr>
+                                <td><img src={% static "base/img/product/img2.jpg" %}></td>
+                                <td>product name</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <img src={% static "base/img/icons/shopping_cart.png" %}>
+                    <div class="dropdown-menu cart-item">
+                        <table border="1">
+                            <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Product Name</th>
+                                <th class="center">Price</th>
+                                <th class="center">Qty.</th>
+                                <th class="center">Amount</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><img src={% static "base/img/product/img1.jpg" %}></td>
+                                <td>product name</td>
+                                <td class="center">1200</td>
+                                <td class="center">2</td>
+                                <td class="center">2400</td>
+                            </tr>
+                            <tr>
+                                <td><img src={% static "base/img/product/img2.jpg" %}></td>
+                                <td>product name</td>
+                                <td class="center">1500</td>
+                                <td class="center">2</td>
+                                <td class="center">3000</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div> <!-- shop icons -->
+        </div> <!-- brand -->
+
+        <div class="menu-bar">
+            <div class="menu">
+                <ul>
+                    <li><a href={% url "base:base" %}>Home</a></li>
+                    <li><a href={% url "base:about" %}>About</a></li>
+                    <li><a href={% url "base:contact" %}>Contact</a></li>
+                </ul>
+            </div>
+            <div class="search-bar">
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="search" placeholder="Search">
+                        <img src={% static "base/img/icons/search.png" %}>
+                    </div>
+                </form>
+            </div>
+        </div> <!-- menu -->
+    </div> <!-- container -->
+</header>

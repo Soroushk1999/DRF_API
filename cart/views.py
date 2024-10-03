@@ -1,19 +1,17 @@
-from rest_framework import viewsets, status
-from rest_framework.response import Response
+from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-from .models import Cart, CartItem, Product
+from .models import Cart, CartItem
 from .serializers import CartSerializer, CartItemSerializer
 
 
 class CartViewSet(viewsets.ModelViewSet):
     serializer_class = CartSerializer
     permission_classes = [IsAuthenticated]
+    http_method_names = ['get']
 
     def get_queryset(self):
-        return Cart.objects.filter(user=self.request.user)
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        cart, created = Cart.objects.get_or_create(user=self.request.user)
+        return [cart]
 
 
 class CartItemViewSet(viewsets.ModelViewSet):
@@ -25,8 +23,20 @@ class CartItemViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         cart, created = Cart.objects.get_or_create(user=self.request.user)
-        serializer.save(cart=cart)
+        product_id = serializer.validated_data.get('product_id')
+        quantity = serializer.validated_data.get('quantity')
+
+        # Check if the item already exists in the cart
+        cart_item, created = CartItem.objects.get_or_create(cart=cart, product_id=product_id)
+
+        if not created:
+            # If it exists, update the quantity
+            cart_item.quantity += quantity
+            cart_item.save()
+        else:
+            # Save new cart item
+            serializer.save(cart=cart)
 
     def perform_update(self, serializer):
-        cart = Cart.objects.get(user=self.request.user)
+        cart = self.get_queryset()
         serializer.save(cart=cart)

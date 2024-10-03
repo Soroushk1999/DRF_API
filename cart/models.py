@@ -9,8 +9,15 @@ class Cart(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    @property
+    def total_price(self):
+        return sum(item.product.price * item.quantity for item in self.items.all())
+
     def __str__(self):
         return f"Cart ({self.user.username})"
+
+    def clear(self):
+        self.delete()
 
 
 class CartItem(models.Model):

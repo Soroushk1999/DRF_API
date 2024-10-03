@@ -8,10 +8,10 @@
                 </div>
                 <div class="widget-content">
                     <ul>
-                        <li><a href={% url "base:about" %}>About</a></li>
-                        <li><a href={% url "base:contact" %}>Contact</a></li>
-                        <li><a href={% url "base:refund" %}>Refund Policy</a></li>
-                        <li><a href={% url "base:terms" %}>Terms & Conditions</a></li>
+                        <li><a href={% url 'base:about' %}>About</a></li>
+                        <li><a href={% url 'base:contact' %}>Contact</a></li>
+                        <li><a href={% url 'base:refund' %}>Refund Policy</a></li>
+                        <li><a href={% url 'base:terms' %}>Terms & Conditions</a></li>
                     </ul>
                 </div>
             </div>
@@ -21,9 +21,9 @@
                 </div>
                 <div class="widget-content">
                     <ul>
-                        <li><a href={% url "base:orders" %}>My Orders</a></li>
-                        <li><a href={% url "base:cart" %}>Cart</a></li>
-                        <li><a href={% url "base:checkout" %}>Checkout</a></li>
+                        <li><a href={% url 'order:order-list' %}>My Orders</a></li>
+                        <li><a href={% url 'cart:cart-list' %}>Cart</a></li>
+                        <li><a href={% url 'payment:checkout' %}>Checkout</a></li>
                     </ul>
                 </div>
             </div>

@@ -13,6 +13,10 @@ class Order(models.Model):
         ('Completed', 'Completed'),
         ('Cancelled', 'Cancelled')
     ])
+    total_price = models.DecimalField(default=0, max_digits=10, decimal_places=2)
+
+    class Meta:
+        db_table = 'order'
 
     def __str__(self):
         return f"Order {self.id} by {self.user.username}"
@@ -22,7 +26,10 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+
+    class Meta:
+        db_table = 'order_item'
 
     def __str__(self):
         return f"{self.quantity} of {self.product.title} in Order {self.order.id}"

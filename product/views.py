@@ -28,3 +28,4 @@ class ProductDetailViewSet(viewsets.ModelViewSet):
     serializer_class = ProductDetailSerializer
     pagination_class = PageNumberPagination
     http_method_names = ['get']
+

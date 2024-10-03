@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -21,7 +20,9 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('status', models.CharField(choices=[('Pending', 'Pending'), ('Processing', 'Processing'), ('Completed', 'Completed'), ('Cancelled', 'Cancelled')], max_length=20)),
+                ('status', models.CharField(
+                    choices=[('Pending', 'Pending'), ('Processing', 'Processing'), ('Completed', 'Completed'),
+                             ('Cancelled', 'Cancelled')], max_length=20)),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
@@ -31,7 +32,8 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('quantity', models.PositiveIntegerField()),
                 ('price', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='orders.order')),
+                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items',
+                                            to='order.order')),
                 ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='product.product')),
             ],
         ),
